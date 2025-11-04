@@ -18,11 +18,13 @@ test_y = splits[3]
 import tensorflow as tf
 model = tf.keras.Sequential([
     tf.keras.layers.Dense(32,activation='relu',input_shape=(train_X.shape[1],)),
+    tf.keras.layers.Dropout(0.2),
     tf.keras.layers.Dense(16,activation='relu'),
+    tf.keras.layers.Dropout(0.2),
     tf.keras.layers.Dense(1,activation='linear')
 ])
 model.compile(optimizer='adam',loss='mae',metrics=['mae','mse'])
-history = model.fit(train_X,train_y,epochs=100)
+history = model.fit(train_X,train_y,batch_size=32,validation_split=0.2,epochs=100)
 # %%
 import numpy as np
 test_loss, test_mae, test_mse = model.evaluate(test_X, test_y)
